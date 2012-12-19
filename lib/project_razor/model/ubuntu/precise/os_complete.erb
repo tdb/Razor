@@ -5,3 +5,4 @@ echo Image UUID <%= @image_uuid %> >> /tmp/razor_complete.log
 echo Node UUID: <%= @node.uuid %> >> /tmp/razor_complete.log
 
 sed -i '/razor_postinstall/d' /etc/rc.local
+rm /usr/local/bin/razor_postinstall.sh
