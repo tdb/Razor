@@ -1,5 +1,13 @@
 # The road forward for Razor
 
+TL;DR: Razor is being rewritten. You can find the rewritten code bases in
+the following repos:
+
+* [Razor server](https://github.com/puppetlabs/razor-server)
+* [Razor microkernel](https://github.com/puppetlabs/razor-el-mk)
+
+***
+
 During it's fairly short lifespan so far, Razor has shown that there
 is considerable demand for a policy-driven provisioning tool based on
 discovery of nodes. The thriving, and growing, community, and the fact
@@ -87,18 +95,3 @@ that the node can request during the installation process.
 
 This will make adding custom installers very easy, and allow for
 adding them entirely through the API.
-
-Status
-
-We've started a strawman of the reimplementation; most of the work has
-gone into the server side so far. The current state of affairs can be
-found on github:
-
-https://github.com/puppetlabs/razor-server
-https://github.com/puppetlabs/razor-el-mk
-
-We'd love to hear your feedback, and hope to see both lots of
-discussion and patches to continue to make Razor the best provisioning
-tool out there.
-
-David Lutterkert, and Daniel Pittman
