@@ -10,6 +10,7 @@ function configure_puppet() {
 }
 
 function run_agent() {
+    puppet agent --enable
     puppet agent -t
     /etc/init.d/puppet start
 }
