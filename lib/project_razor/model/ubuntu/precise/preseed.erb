@@ -75,4 +75,5 @@ wget <%= api_svc_uri %>/policy/callback/<%= policy_uuid %>/postinstall/inject -O
 sed -i '/^exit 0$/d' /target/etc/rc.local;  \
 echo bash /usr/local/bin/razor_postinstall.sh >> /target/etc/rc.local; \
 echo exit 0 >> /target/etc/rc.local;  \
-chmod +x /target/usr/local/bin/razor_postinstall.sh
+chmod +x /target/usr/local/bin/razor_postinstall.sh; \
+sed -i 's/PermitRootLogin without-password/PermitRootLogin yes/' /target/etc/ssh/sshd_config
