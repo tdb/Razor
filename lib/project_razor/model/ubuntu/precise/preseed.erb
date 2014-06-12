@@ -27,17 +27,17 @@ d-i partman-lvm/device_remove_lvm boolean true
 d-i partman-md/device_remove_md boolean true
 d-i partman-auto/expert_recipe string \
 	root :: \
-		8192 8192 8192 linux-swap \
+		16384 16384 16384 linux-swap \
 			$primary{ } \
 			method{ swap } format{ } \
 		. \
-		8192 10000 1000000000 ext4 \
+		16384 10000 1000000000 ext4 \
 			$primary{ } $bootable{ } \
 			method{ format } format{ } \
 			use_filesystem{ } filesystem{ ext4 } \
 			mountpoint{ / } \
 		. \
-		8192 8192 8192 ext4 \
+		16384 16384 16384 ext4 \
 			$primary{ } \
 			method{ format } format{ } \
 			use_filesystem{ } filesystem{ ext4 } \
