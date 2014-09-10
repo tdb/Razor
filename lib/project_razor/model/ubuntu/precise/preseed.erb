@@ -68,7 +68,22 @@ d-i grub-installer/only_debian boolean true
 d-i grub-installer/with_other_os boolean true
 d-i finish-install/reboot_in_progress note
 #Our callbacks
-d-i preseed/early_command string wget <%= api_svc_uri %>/policy/callback/<%= policy_uuid %>/preseed/start
+# The hooks available are listed here:
+# http://d-i.alioth.debian.org/doc/internals/apb.html#ap-hooks-general
+# This pulls a new adduser.conf in to place before the Operating System
+# gets installed. The adduser package is happy if the file already exists
+# and doesn't overwrite it. The only downside is that this copy could drift
+# out of date in future OS versions.
+# The range 99900-99999 is reserved in admin for local accounts.
+d-i preseed/early_command string \
+wget <%= api_svc_uri %>/policy/callback/<%= policy_uuid %>/preseed/start; \
+wget <%= api_svc_uri %>/policy/callback/<%= policy_uuid %>/preseed/adduserconf -O /tmp/adduser.conf; \
+echo "cp /tmp/adduser.conf /target/etc/adduser.conf" > /usr/lib/base-installer.d/00systemuids; \
+chmod 755 /usr/lib/base-installer.d/00systemuids
+# This is an alternative approach that modifies the existing file later on in
+# the install process, but misses the first couple of users/groups.
+#echo "sed -e 's/^FIRST_SYSTEM_UID=.*$/FIRST_SYSTEM_UID=99000/' -e 's/^LAST_SYSTEM_UID=.*$/LAST_SYSTEM_UID=99999/' -e 's/^FIRST_SYSTEM_GID=.*$/FIRST_SYSTEM_GID=99000/' -e 's/^LAST_SYSTEM_GID=.*$/LAST_SYSTEM_GID=99999/' /target/etc/adduser.conf > /target/etc/adduser.conf.new && mv /target/etc/adduser.conf.new /target/etc/adduser.conf" > /usr/lib/post-base-installer.d/00systemuids; \
+#chmod 755 /usr/lib/post-base-installer.d/00systemuids
 d-i preseed/late_command string  \
 wget <%= api_svc_uri %>/policy/callback/<%= policy_uuid %>/preseed/end; \
 wget <%= api_svc_uri %>/policy/callback/<%= policy_uuid %>/postinstall/inject -O /target/usr/local/bin/razor_postinstall.sh;  \

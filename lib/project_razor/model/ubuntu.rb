@@ -99,6 +99,10 @@ module ProjectRazor
             @result = "Replied with preseed file"
             fsm_action(:preseed_file, :preseed)
             return generate_preseed(@policy_uuid)
+          when "adduserconf"
+            @result = "Replied with adduser.conf"
+            fsm_action(:preseed_adduserconf, :preseed)
+            return adduser_conf
           else
             return "error"
         end
@@ -242,6 +246,11 @@ module ProjectRazor
       def os_complete_script(node)
         @result = "Replied with os complete script"
         filepath = template_filepath('os_complete')
+        ERB.new(File.read(filepath)).result(binding)
+      end
+
+      def adduser_conf
+        filepath = template_filepath('adduser.conf')
         ERB.new(File.read(filepath)).result(binding)
       end
 
