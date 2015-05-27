@@ -67,6 +67,7 @@ d-i apt-setup/restricted boolean true
 d-i pkgsel/include string curl openssh-server puppet
 d-i grub-installer/only_debian boolean true
 d-i grub-installer/with_other_os boolean true
+d-i grub-installer/bootdev string /dev/sda
 d-i finish-install/reboot_in_progress note
 #Our callbacks
 # The hooks available are listed here:
