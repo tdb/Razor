@@ -57,6 +57,13 @@ module ProjectRazor
                 :required    => true,
                 :description => "root password (> 8 characters)"
             },
+            "@root_disk" => {
+                :default     => "/dev/sda",
+                :example     => "/dev/sda",
+                :validation  => '^\/dev\/[a-zA-Z0-9\-\:\/\.]+$',
+                :required    => false,
+                :description => "Full path to root disk"
+            },
         }
       end
 
