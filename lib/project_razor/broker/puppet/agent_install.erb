@@ -3,6 +3,15 @@
 set -u
 #set -e
 
+function install_puppet() {
+    apt-get -y purge facter
+    apt-get -y --purge autoremove
+    echo "deb https://apt.puppetlabs.com `lsb_release -cs` main dependencies" > /etc/apt/sources.list.d/puppetlabs.list
+    curl https://apt.puppetlabs.com/pubkey.gpg | apt-key add -
+    apt-get update
+    apt-get -y install puppet
+}
+
 function configure_puppet() {
     if [ -f /etc/default/puppet ]; then
         sed -i 's/START\s*=\s*no/START=yes/gi' /etc/default/puppet
@@ -33,6 +42,7 @@ function facts_dot_d() {
 }
 
 function provision_puppet() {
+    install_puppet
     configure_puppet
     <%= 'facts_dot_d' if @options[:metadata] %>
     run_agent
