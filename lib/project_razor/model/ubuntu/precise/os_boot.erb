@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# On 15.10 the startup procedure might run this before
+# DHCP has completed, so this is a bodge to avoid that.
+sleep 120
+
 # Get current IP
 node_ip=`facter ipaddress`
 # Send IP up
