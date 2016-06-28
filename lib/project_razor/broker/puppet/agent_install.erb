@@ -6,22 +6,16 @@ set -u
 function install_puppet() {
     apt-get -y purge facter
     apt-get -y --purge autoremove
-    echo "deb https://apt.puppetlabs.com `lsb_release -cs` main dependencies" > /etc/apt/sources.list.d/puppetlabs.list
+    echo "deb https://apt.puppetlabs.com `lsb_release -cs` PC1" > /etc/apt/sources.list.d/puppetlabs-pc1.list
     curl https://apt.puppetlabs.com/pubkey.gpg | apt-key add -
     apt-get update
-    apt-get -y install puppet
-}
-
-function configure_puppet() {
-    if [ -f /etc/default/puppet ]; then
-        sed -i 's/START\s*=\s*no/START=yes/gi' /etc/default/puppet
-    fi
+    apt-get -y install puppet-agent
 }
 
 function run_agent() {
-    puppet agent --enable
-    puppet agent -t
-    /etc/init.d/puppet start
+    /opt/puppetlabs/bin/puppet agent --enable
+    /opt/puppetlabs/bin/puppet agent -t
+    /opt/puppetlabs/bin/puppet resource service puppet ensure=running enable=true
 }
 
 #This fuction is not called if no custom facts are given
@@ -43,7 +37,6 @@ function facts_dot_d() {
 
 function provision_puppet() {
     install_puppet
-    configure_puppet
     <%= 'facts_dot_d' if @options[:metadata] %>
     run_agent
     echo Puppet installation finished!
