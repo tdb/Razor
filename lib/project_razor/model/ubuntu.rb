@@ -301,7 +301,10 @@ module ProjectRazor
       end
 
       def generate_preseed(policy_uuid)
-        filepath = template_filepath('preseed')
+        filepath = template_filepath("preseed.d/#{@hostname_prefix}")
+        unless File.file?(filepath)
+          filepath = template_filepath('preseed')
+        end
         ERB.new(File.read(filepath)).result(binding)
       end
     end
